@@ -8,6 +8,7 @@ soup=BeautifulSoup(response.content,'html.parser')
 songs_list=soup.find_all('div',class_='rack_node')
 songs_link=[]
 d=[]
+t=[]
 if response.status_code!=200:
     print(response.status_code)
 else:
@@ -23,5 +24,15 @@ else:
             soup=BeautifulSoup(response.content,'html.parser')
             video_title=soup.find('div',id='videoTitle')
             video_info=soup.find_all('ul',class_='videoInfoList')
-            d=video_title.findNext('h1').text
-            t=video_info[-1].findNext('a')
+            s1=video_title.findNext('h1').text
+            s1=s1.split(' \t',1)[0]
+            d.append(s1)
+
+            s2=video_info[-1].findNext('a')
+            s2=s2['href']
+            s2=s2.split('https://www.youtube.com/watch?v=',1)[1]
+            t.append(s2)
+
+
+print(d)
+print(t)
