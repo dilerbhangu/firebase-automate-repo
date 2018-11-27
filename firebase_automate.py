@@ -1,5 +1,6 @@
 import requests
 import time
+from tqdm import tqdm
 from bs4 import BeautifulSoup
 from firebase import firebase
 
@@ -17,22 +18,19 @@ songs_list=soup.find_all('div',class_='rack_node')
 songs_link=[]
 d=[]
 t=[]
-counter=0
+
 if response.status_code!=200:
     print(response.status_code)
 else:
-    for i in songs_list:
-        counter+=1
-        print('hi i am in first for loop '+str(counter))
+    for i in tqdm(songs_list):
         link=i.findNext('a')
         views=i.findNext('span',class_='views')
         if int(views['data-views']) >=300000:
             songs_link.append(link['href'])
 
-    counter=0
     print(len(songs_link))
 
-    for link in songs_link:
+    for link in tqdm(songs_link):
         try:
             response=requests.get(link,header,timeout=60)
         except requests.exceptions.RequestException as e:
@@ -42,8 +40,6 @@ else:
         if response.status_code!=200:
             print(response.status_code)
         else:
-            counter+=1
-            print('hi i am in second for loop '+str(counter))
             soup=BeautifulSoup(response.content,'html.parser')
             video_title=soup.find('div',id='videoTitle')
             video_info=soup.find_all('ul',class_='videoInfoList')
@@ -53,6 +49,7 @@ else:
             s2=video_info[-1].findNext('a')
             s2=s2['href']
             s2=s2.split('https://www.youtube.com/watch?v=',1)[1]
+
             if s2==youtube_code_previous:
                 break
 
