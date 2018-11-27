@@ -5,6 +5,10 @@ from firebase import firebase
 
 timestamp=int(time.time())
 
+with open('youtube_code.txt') as f:
+    youtube_code_previous=f.read().splitlines()[0]
+
+
 url='https://imvdb.com/new/'
 header={'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'}
 response= requests.get(url,header,timeout=10)
@@ -30,9 +34,8 @@ else:
 
     for link in songs_link:
         try:
-            # r = requests.get(url, params={'s': thing})
             response=requests.get(link,header,timeout=60)
-        except requests.exceptions.RequestException as e:  # This is the correct syntax
+        except requests.exceptions.RequestException as e:
             print (e)
             continue
 
@@ -46,25 +49,23 @@ else:
             video_info=soup.find_all('ul',class_='videoInfoList')
             s1=video_title.findNext('h1').text
             s1=s1.split(' \t',1)[0]
-            d.append(s1)
 
             s2=video_info[-1].findNext('a')
             s2=s2['href']
             s2=s2.split('https://www.youtube.com/watch?v=',1)[1]
+            if s2==youtube_code_previous:
+                break
+
             t.append(s2)
+            d.append(s1)
+
             time.sleep(5)
 
-with open('youtube_code.txt', 'w') as f:
-    for item in t:
-        f.write("%s\n" % item)
+if len(d)>0:
+    with open('youtube_code.txt','w') as f:
+        for item in t:
+            f.write("%s\n" % item)
 
-with open('descripition.txt', 'w') as f:
-    for item in d:
-        f.write("%s\n" % item)
-
-firebase=firebase.FirebaseApplication('https://musictube-75f00.firebaseio.com/')
-
-for i in range(len(t)):
-    result=firebase.post('/English',{'t':t[i],'d':d[i],'s':timestamp})
-    print(result)
-    time.sleep(2)
+    with open('youtube_title.txt','w') as f:
+        for item in d:
+            f.write("%s\n" % item)

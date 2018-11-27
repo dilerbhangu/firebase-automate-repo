@@ -7,17 +7,21 @@ config={"apiKey": "AIzaSyChJD9SNw8rQlFw_eVUlgpuaiUfChl9xok",
         "databaseURL":"https://musictube-75f00.firebaseio.com",
         "storageBucket":"musictube-75f00.appspot.com"
 }
-
-timestamp=int(time.time())
-file1 = open("youtube_code.txt","r")
-file2 = open("descripition.txt","r")
 t=[]
 d=[]
-for word in file1.read().split():
-    t.append(word)
+timestamp=int(time.time())
 
-for word in file2.read().split():
-    d.append(word)
+with open('youtube_code.txt','r') as f:
+    lines_f1=f1.read().splitlines()
+
+with open('youtube_title.txt','r') as f:
+    lines_f2=f2.read().splitlines()
+
+for line in lines_f1:
+    t.append(line)
+
+for line in lines_f2:
+    d.append(line)
 
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
