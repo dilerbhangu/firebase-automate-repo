@@ -1,7 +1,7 @@
 import requests
 import time
-from firebase import firebase
 import pyrebase
+
 config={"apiKey": "AIzaSyChJD9SNw8rQlFw_eVUlgpuaiUfChl9xok",
         "authDomain":"148555283319.firebaseapp.com",
         "databaseURL":"https://musictube-75f00.firebaseio.com",

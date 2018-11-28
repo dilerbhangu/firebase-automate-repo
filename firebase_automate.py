@@ -2,7 +2,6 @@ import requests
 import time
 from tqdm import tqdm
 from bs4 import BeautifulSoup
-from firebase import firebase
 
 timestamp=int(time.time())
 
