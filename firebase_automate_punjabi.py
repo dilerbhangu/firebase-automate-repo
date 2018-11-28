@@ -3,6 +3,9 @@ from bs4 import BeautifulSoup
 import time
 from tqdm import tqdm
 
+with open('youtube_code_punjabi.txt') as f:
+    youtube_code_previous=f.read().splitlines()[0]
+
 url='https://www.mrhd.in/punjabi/'
 try:
     response=requests.get(url,timeout=10)
@@ -21,23 +24,31 @@ if response.status_code==200:
         songs_links.append(song.findNext('a')['href'])
 
     for link in tqdm(songs_links):
-        try:
-            response=requests.get(link,timeout=30)
-        except requests.exceptions.RequestException as e:
-            print(e)
+
+        while True:
+            try:
+                response=requests.get(link,timeout=30)
+            except requests.exceptions.RequestException as e:
+                print(e)
+                time.sleep(5)
+            else:
+                break
 
         if response.status_code==200:
             soup=BeautifulSoup(response.content,'html.parser')
             video_info=soup.find('iframe')['src']
             video_info=video_info.split('//www.youtube.com/embed/',1)[1]
-            t.append(video_info)
 
             video_title=soup.find('h1',class_='entry-title').get_text()
-            video_title=video_title.split(' Video HD  Download',1)[0]
-            d.append(video_title)
+            video_title=video_title.split(' Video HD  Download',1)
+
+            if video_info==youtube_code_previous:
+                break
+            t.append(video_info)
+            d.append(video_title[0])
 
 
-if len(d):
+if len(d)>0:
     with open('youtube_code_punjabi.txt','w') as f:
         for item in t:
             f.write('%s\n'%item)

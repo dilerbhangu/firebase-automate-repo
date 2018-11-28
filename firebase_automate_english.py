@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 timestamp=int(time.time())
 
-with open('youtube_code.txt') as f:
+with open('youtube_code_english.txt') as f:
     youtube_code_previous=f.read().splitlines()[0]
 
 
@@ -30,15 +30,16 @@ else:
     print(len(songs_link))
 
     for link in tqdm(songs_link):
-        try:
-            response=requests.get(link,header,timeout=60)
-        except requests.exceptions.RequestException as e:
-            print (e)
-            continue
+        while True:
+            try:
+                response=requests.get(link,timeout=30)
+            except requests.exceptions.RequestException as e:
+                print(e)
+                time.sleep(5)
+            else:
+                break
 
-        if response.status_code!=200:
-            print(response.status_code)
-        else:
+        if response.status_code==200:
             soup=BeautifulSoup(response.content,'html.parser')
             video_title=soup.find('div',id='videoTitle')
             video_info=soup.find_all('ul',class_='videoInfoList')
@@ -55,7 +56,6 @@ else:
             t.append(s2)
             d.append(s1)
 
-            time.sleep(5)
 
 if len(d)>0:
     with open('youtube_code_english.txt','w') as f:

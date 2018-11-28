@@ -12,10 +12,10 @@ d=[]
 timestamp=int(time.time())
 
 with open('youtube_code.txt','r') as f:
-    lines_f1=f1.read().splitlines()
+    lines_f1=f.read().splitlines()
 
 with open('youtube_title.txt','r') as f:
-    lines_f2=f2.read().splitlines()
+    lines_f2=f.read().splitlines()
 
 for line in lines_f1:
     t.append(line)
@@ -26,6 +26,11 @@ for line in lines_f2:
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 for i in range(len(t)):
-    data={'t':t[i],'d':d[i],'s':timestamp}
-    result = db.child("English").push(data)
-    print(result)
+    while True:
+        try:
+            data={'t':t[i],'d':d[i],'s':timestamp}
+            result = db.child("English").push(data)
+        except Exception as e:
+            print(e)
+        else:
+            break
