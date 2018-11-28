@@ -58,10 +58,10 @@ else:
             time.sleep(5)
 
 if len(d)>0:
-    with open('youtube_code.txt','w') as f:
+    with open('youtube_code_english.txt','w') as f:
         for item in t:
             f.write("%s\n" % item)
 
-    with open('youtube_title.txt','w') as f:
+    with open('youtube_title_english.txt','w') as f:
         for item in d:
             f.write("%s\n" % item)
