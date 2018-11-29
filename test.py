@@ -1,12 +1,5 @@
 #mrhd.in
 #mh-loop-thumb
+import gitignore
 
-for l in range(1,11):
-    while true:
-        if l!=7:
-            print(l)
-        elif l==7:
-            print('exception')
-        else:
-            break
-    print(l)
+print(type(gitignore.API_KEY))
