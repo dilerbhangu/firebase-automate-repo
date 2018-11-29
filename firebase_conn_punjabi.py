@@ -3,10 +3,10 @@ import time
 import pyrebase
 from tqdm import tqdm
 
-config={"apiKey": "AIzaSyChJD9SNw8rQlFw_eVUlgpuaiUfChl9xok",
-        "authDomain":"148555283319.firebaseapp.com",
-        "databaseURL":"https://musictube-75f00.firebaseio.com",
-        "storageBucket":"musictube-75f00.appspot.com"
+config={"apiKey": passwords.API_KEY,
+        "authDomain":passwords.AUTH_DOMAIN,
+        "databaseURL":passwords.DATABASE_URL,
+        "storageBucket":passwords.STROAGE_BUCKET
 }
 t=[]
 d=[]
