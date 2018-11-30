@@ -2,6 +2,14 @@ import requests
 from bs4 import BeautifulSoup
 import time
 from tqdm import tqdm
+import pyrebase
+
+config={"apiKey": passwords.API_KEY,
+        "authDomain":passwords.AUTH_DOMAIN,
+        "databaseURL":passwords.DATABASE_URL,
+        "storageBucket":passwords.STROAGE_BUCKET
+}
+timestamp=int(time.time())
 
 with open('youtube_code_punjabi.txt') as f:
     youtube_code_previous=f.read().splitlines()[0]
@@ -56,3 +64,25 @@ if len(d)>0:
     with open('youtube_title_punjabi.txt','w') as f:
         for item in d:
             f.write('%s\n'%item)
+
+    with open('youtube_code_punjabi.txt','r') as f:
+        lines_f1=f.read().splitlines()
+
+    with open('youtube_title_punjabi.txt','r') as f:
+        lines_f2=f.read().splitlines()
+
+    t=[]
+    d=[]
+
+    for line in lines_f1:
+        t.append(line)
+
+    for line in lines_f2:
+        d.append(line)
+
+    firebase = pyrebase.initialize_app(config)
+    db = firebase.database()
+    for i in tqdm(range(len(t))):
+        data={'t':t[i],'d':d[i],'s':timestamp}
+        result = db.child("Punjabi").push(data)
+        print(result)
