@@ -1,6 +1,7 @@
 import requests
 import time
 import pyrebase
+import passwords
 from tqdm import tqdm
 
 config={"apiKey": passwords.API_KEY,
@@ -27,6 +28,11 @@ for line in lines_f2:
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 for i in tqdm(range(len(t))):
-    data={'t':t[i],'d':d[i],'s':timestamp}
-    result = db.child("Hindi").push(data)
-    print(result)
+    for i in range(10):
+        try:
+            data={'t':t[i],'d':d[i],'s':timestamp}
+            result = db.child("Hindi").push(data)
+        except requests.exceptions.RequestException as e:
+            print(e)
+        else:
+            break

@@ -12,7 +12,6 @@ try:
 except requests.exceptions.RequestException as e:
     print(e)
 else:
-    if response.status_code==200:
         soup=BeautifulSoup(response.content,'html.parser')
         songs_list=soup.find_all('div',class_='mh-loop-thumb')
 
@@ -24,7 +23,7 @@ else:
             songs_links.append(song.findNext('a')['href'])
 
         for link in tqdm(songs_links):
-            while True:
+            for i in range(10):
                 try:
                     response=requests.get(link,timeout=30)
                 except requests.exceptions.RequestException as e:
@@ -33,19 +32,18 @@ else:
                 else:
                     break
 
-            if response.status_code==200:
-                soup=BeautifulSoup(response.content,'html.parser')
-                video_info=soup.find('iframe')['src']
-                video_info=video_info.split('//www.youtube.com/embed/',1)[1]
+            soup=BeautifulSoup(response.content,'html.parser')
+            video_info=soup.find('iframe')['src']
+            video_info=video_info.split('//www.youtube.com/embed/',1)[1]
 
-                video_title=soup.find('h1',class_='entry-title').get_text()
-                video_title=video_title.split(' Video Download HD',1)
+            video_title=soup.find('h1',class_='entry-title').get_text()
+            video_title=video_title.split(' Video Download HD',1)
 
-                if video_info==youtube_code_previous:
-                    break
+            if video_info==youtube_code_previous:
+                break
 
-                t.append(video_info)
-                d.append(video_title[0])
+            t.append(video_info)
+            d.append(video_title[0])
 
 
 if len(d)>0:
