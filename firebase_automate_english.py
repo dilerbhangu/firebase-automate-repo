@@ -4,7 +4,9 @@ from tqdm import tqdm
 from bs4 import BeautifulSoup
 import firebase_conn_english
 
-with open('youtube_code_english.txt') as f:
+PATH='/home/bhangutech/Python Projects/firebase-automate-repo/'
+
+with open(PATH+'youtube_code_english.txt') as f:
     youtube_code_previous = f.read().splitlines()[0]
 
 
@@ -59,11 +61,11 @@ else:
 
 
 if len(d) > 0:
-    with open('youtube_code_english.txt', 'w') as f:
+    with open(PATH+'youtube_code_english.txt', 'w') as f:
         for item in t:
             f.write("%s\n" % item)
 
-    with open('youtube_title_english.txt', 'w') as f:
+    with open(PATH+'youtube_title_english.txt', 'w') as f:
         for item in d:
             f.write("%s\n" % item)
 

@@ -13,7 +13,9 @@ config = {"apiKey": passwords.API_KEY,
           }
 timestamp = int(time.time())
 
-with open('youtube_code_hindi.txt') as f:
+PATH='/home/bhangutech/Python Projects/firebase-automate-repo/'
+
+with open(PATH+'youtube_code_hindi.txt') as f:
     youtube_code_previous = f.read().splitlines()[0]
 
 url = 'https://www.mrhd.in/hindi/'
@@ -59,11 +61,11 @@ else:
 
 
 if len(d) > 0:
-    with open('youtube_code_hindi.txt', 'w') as f:
+    with open(PATH+'youtube_code_hindi.txt', 'w') as f:
         for item in t:
             f.write('%s\n' % item)
 
-    with open('youtube_title_hindi.txt', 'w') as f:
+    with open(PATH+'youtube_title_hindi.txt', 'w') as f:
         for item in d:
             f.write('%s\n' % item)
 
